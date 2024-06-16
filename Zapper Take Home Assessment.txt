@@ -1,0 +1,82 @@
+1) To tract transactions between customers and merchants, we can use multiple tables where one of the tables has a reference key column referring to another table record.
+	
+	Create customer table
+		CREATE TABLE user (
+		customer_id INT PRIMARY KEY,
+		customer_name VARCHAR(50),
+		);
+		
+	Create merchant table
+		CREATE TABLE merchant (
+		merchant_id INT PRIMARY KEY,
+		merchant_name VARCHAR(50),
+		);
+	
+	Create transaction table
+		CREATE TABLE transaction (
+		transaction_id INT PRIMARY KEY,
+		customer_id INT,
+		merchant_id INT,
+		created_date DATE,
+		transaction_detail VARCHAR(250),
+		);
+	
+Example:	
+	INSERT INTO transaction (customer_id, merchant_id, created_date, transaction_detail)
+	VALUES (1, 1, GETDATE(), 'transaction detail');
+	
+2)
+	2.1 
+		    public bool isFeatureEnabled(string setting, int feature)
+			{
+				if (string.IsNullOrEmpty(setting) || string.IsNullOrWhiteSpace(setting))
+					return false;
+
+				if(feature > setting.Length)
+					return false;
+
+				//index starts at 0, need to subtract 1 to get the index
+				feature--;
+
+				return setting.ToCharArray()[feature] == '1'; //0 not enabled, 1 is enabled
+			}
+			
+	2.2
+		//Read file function
+		public string ReadSetting(string filePath)
+		{
+			try
+			{
+				if (string.IsNullOrEmpty(filePath) || string.IsNullOrWhiteSpace(filePath))
+					return string.Empty;
+
+				if (!File.Exists(filePath))
+					return string.Empty;              
+
+				using var reader = new StreamReader(filePath);
+				return reader.ReadToEnd();
+			}
+			catch(Exception)
+			{
+				throw;
+			}
+		}
+		
+		
+		//Write file function
+		public void SaveSetting(string settings, string filePath)
+		{
+			try
+			{
+				if (string.IsNullOrEmpty(filePath) || string.IsNullOrWhiteSpace(filePath))
+					return;
+
+				using var writer = new StreamWriter(filePath, false);
+				writer.Write(settings);
+			}
+			catch (Exception)
+			{
+				throw;
+			}
+		}
+		
